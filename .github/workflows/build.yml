@@ -2,16 +2,17 @@ name: Build APK
 
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types: [build_apk]
+    inputs:
+      url:
+        description: "Website URL"
+        required: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
     - name: Setup Java
       uses: actions/setup-java@v3
@@ -19,12 +20,12 @@ jobs:
         distribution: temurin
         java-version: 17
 
-    - name: Install Android SDK
+    - name: Setup Android
       uses: android-actions/setup-android@v3
 
     - name: Replace URL
       run: |
-        sed -i "s|MY_URL|${{ github.event.client_payload.url }}|g" template/app/src/main/java/com/example/app/MainActivity.java
+        sed -i "s|MY_URL|${{ github.event.inputs.url }}|g" template/app/src/main/java/com/example/app/MainActivity.java
 
     - name: Build APK
       run: |
