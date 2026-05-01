@@ -3,7 +3,7 @@ from telethon import TelegramClient, events
 
 api_id = 20464354
 api_hash = "c6fa656e333fd6c9d5b9867daf028ea1"
-bot_token = "SENING_BOT_TOKENING"
+bot_token = "8477064448:AAEEd6nzEs8qd03OHr81a6Cj_nSCyh_a_Hs"
 
 GITHUB_TOKEN = "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"
 REPO = "Nurmamatov404/sayt_to_apk"
