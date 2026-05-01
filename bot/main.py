@@ -5,7 +5,7 @@ api_id = 20464354
 api_hash = "c6fa656e333fd6c9d5b9867daf028ea1"
 bot_token = "SENING_BOT_TOKENING"
 
-GITHUB_TOKEN = "GITHUB_TOKEN"
+GITHUB_TOKEN = "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"
 REPO = "Nurmamatov404/sayt_to_apk"
 
 client = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
