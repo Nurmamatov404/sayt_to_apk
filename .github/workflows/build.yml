@@ -35,15 +35,23 @@ jobs:
 
     - name: Download Logo
       run: |
-        curl -L "${{ github.event.inputs.url }}/favicon.ico" -o logo.ico || true
-        curl -L "${{ github.event.inputs.url }}/favicon.png" -o logo.png || true
+        curl -L -A "Mozilla/5.0" "${{ github.event.inputs.url }}/favicon.ico" -o logo.ico || true
+        curl -L -A "Mozilla/5.0" "${{ github.event.inputs.url }}/favicon.png" -o logo.png || true
+
+    - name: Check Logo File
+      run: |
+        file logo.ico || true
+        file logo.png || true
 
     - name: Convert and Resize Logo
       run: |
-        if [ -f logo.ico ]; then
+        if file logo.ico | grep -q "image"; then
           convert logo.ico -resize 512x512 logo.png
-        else
+        elif file logo.png | grep -q "image"; then
           convert logo.png -resize 512x512 logo.png
+        else
+          echo "No valid logo found, using default"
+          cp template/app/src/main/res/mipmap-mdpi/ic_launcher.png logo.png
         fi
 
     - name: Replace App Icons
