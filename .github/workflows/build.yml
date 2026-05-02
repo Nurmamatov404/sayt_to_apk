@@ -26,6 +26,10 @@ jobs:
     - name: Setup Android
       uses: android-actions/setup-android@v3
 
+    - name: Set App Name
+      run: |
+        sed -i "s|MY_APP_NAME|${{ github.event.inputs.app_name }}|g" template/app/src/main/res/values/strings.xml
+
     - name: Replace URL
       run: |
         sed -i "s|MY_URL|${{ github.event.inputs.url }}|g" template/app/src/main/java/com/webviewtemplate/webviewtemplate/MainActivity.kt
