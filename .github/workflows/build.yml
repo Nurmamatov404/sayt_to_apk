@@ -33,32 +33,22 @@ jobs:
       run: |
         sed -i "s|MY_APP_NAME|${{ github.event.inputs.app_name }}|g" template/app/src/main/res/values/strings.xml
 
-    - name: Download Logo
+    - name: Download Logo (Google favicon)
       run: |
-        curl -L -A "Mozilla/5.0" "${{ github.event.inputs.url }}/favicon.ico" -o logo.ico || true
-        curl -L -A "Mozilla/5.0" "${{ github.event.inputs.url }}/favicon.png" -o logo.png || true
+        curl -L "https://www.google.com/s2/favicons?sz=512&domain=$(echo ${{ github.event.inputs.url }} | sed 's|https://||;s|http://||')" -o logo.png true
 
     - name: Check Logo File
       run: |
         file logo.ico || true
         file logo.png || true
 
-    - name: Convert and Resize Logo
+    - name: Resize Logo
       run: |
-        if file logo.ico | grep -q "image"; then
-          convert logo.ico -resize 512x512 logo.png
-        elif file logo.png | grep -q "image"; then
-          convert logo.png -resize 512x512 logo.png
-        else
-          echo "No valid logo found, using default"
-          cp template/app/src/main/res/mipmap-mdpi/ic_launcher.png logo.png
-        fi
+        convert logo.png -resize 512x512 logo.png
 
-    - name: Replace App Icons
+    - name: Replace Icons (universal)
       run: |
-        for dir in template/app/src/main/res/mipmap-*; do
-          cp logo.png $dir/ic_launcher.png || true
-        done
+        find template/app/src/main/res -type f -name "ic_launcher*" -exec cp logo.png {} \; || true
 
     - name: Replace URL
       run: |
