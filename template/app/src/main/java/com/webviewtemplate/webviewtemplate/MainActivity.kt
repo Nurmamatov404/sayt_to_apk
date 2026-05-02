@@ -8,7 +8,7 @@ import android.webkit.WebView
 import android.window.OnBackInvokedDispatcher
 import com.webviewtemplate.webviewtemplate.databinding.ActivityMainBinding
 
-class MainActivity : Activity()
+class MainActivity : Activity() {
     private val applicationUrl = "MY_URL"
     private lateinit var binding: ActivityMainBinding
     private lateinit var webView: WebView
