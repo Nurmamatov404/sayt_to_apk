@@ -35,8 +35,9 @@ jobs:
 
     - name: Download Logo (Google favicon)
       run: |
-        curl -L "https://www.google.com/s2/favicons?sz=512&domain=$(echo ${{ github.event.inputs.url }} | sed 's|https://||;s|http://||')" -o logo.png true
-
+        DOMAIN=$(echo "${{ github.event.inputs.url }}" | sed 's|https://||;s|http://||;s|/.*||')
+        curl -L "https://www.google.com/s2/favicons?sz=512&domain=$DOMAIN" -o logo.png
+        
     - name: Check Logo File
       run: |
         file logo.ico || true
