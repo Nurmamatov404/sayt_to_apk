@@ -25,7 +25,7 @@ jobs:
 
     - name: Replace URL
       run: |
-        sed -i "s|MY_URL|${{ github.event.inputs.url }}|g" template/app/src/main/java/com/example/app/MainActivity.java
+        sed -i "s|MY_URL|${{ github.event.inputs.url }}|g" template/app/src/main/java/com/webviewtemplate/webviewtemplate/MainActivity.kt
 
     - name: Build APK
       run: |
