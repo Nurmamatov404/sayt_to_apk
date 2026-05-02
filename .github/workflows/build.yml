@@ -30,6 +30,11 @@ jobs:
       run: |
         sed -i "s|MY_APP_NAME|${{ github.event.inputs.app_name }}|g" template/app/src/main/res/values/strings.xml
 
+    - name: Download Logo
+      run: |
+        curl -L "${{ github.event.inputs.url }}/favicon.ico" -o logo.ico || true
+        curl -L "${{ github.event.inputs.url }}/favicon.png" -o logo.png || true
+
     - name: Replace URL
       run: |
         sed -i "s|MY_URL|${{ github.event.inputs.url }}|g" template/app/src/main/java/com/webviewtemplate/webviewtemplate/MainActivity.kt
