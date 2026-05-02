@@ -33,9 +33,6 @@ class MainActivity : Activity() {
         } else {
             finish()
         }
-    }
-}
-
 
         webView.settings.domStorageEnabled = true
         webView.settings.javaScriptEnabled = true
