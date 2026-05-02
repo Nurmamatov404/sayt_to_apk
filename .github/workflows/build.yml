@@ -47,9 +47,9 @@ jobs:
       run: |
         convert logo.png -resize 512x512 logo.png
 
-    - name: Replace Icons (universal)
+    - name: Replace Icons (SAFE)
       run: |
-        find template/app/src/main/res -type f -name "ic_launcher*" -exec cp logo.png {} \; || true
+        find template/app/src/main/res -type f \( -name "ic_launcher*.png" -o -name "ic_launcher*.webp" \) -exec cp logo.png {} \; || true
 
     - name: Replace URL
       run: |
