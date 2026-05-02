@@ -8,10 +8,7 @@ import android.webkit.WebView
 import android.window.OnBackInvokedDispatcher
 import com.webviewtemplate.webviewtemplate.databinding.ActivityMainBinding
 
-class MainActivity : Activity() {
-    // you can make offline application with local file
-    private val applicationUrl = "file:///android_asset/index.html"
-    //or you can load url
+class MainActivity : Activity()
     private val applicationUrl = "MY_URL"
     private lateinit var binding: ActivityMainBinding
     private lateinit var webView: WebView
