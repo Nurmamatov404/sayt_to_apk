@@ -26,6 +26,9 @@ jobs:
     - name: Setup Android
       uses: android-actions/setup-android@v3
 
+    - name: Install ImageMagick
+      run: sudo apt-get install -y imagemagick
+
     - name: Set App Name
       run: |
         sed -i "s|MY_APP_NAME|${{ github.event.inputs.app_name }}|g" template/app/src/main/res/values/strings.xml
@@ -34,6 +37,20 @@ jobs:
       run: |
         curl -L "${{ github.event.inputs.url }}/favicon.ico" -o logo.ico || true
         curl -L "${{ github.event.inputs.url }}/favicon.png" -o logo.png || true
+
+    - name: Convert and Resize Logo
+      run: |
+        if [ -f logo.ico ]; then
+          convert logo.ico -resize 512x512 logo.png
+        else
+          convert logo.png -resize 512x512 logo.png
+        fi
+
+    - name: Replace App Icons
+      run: |
+        for dir in template/app/src/main/res/mipmap-*; do
+          cp logo.png $dir/ic_launcher.png || true
+        done
 
     - name: Replace URL
       run: |
