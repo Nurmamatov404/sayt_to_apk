@@ -33,28 +33,39 @@ jobs:
       run: |
         sed -i "s|MY_APP_NAME|${{ github.event.inputs.app_name }}|g" template/app/src/main/res/values/strings.xml
 
-    - name: Download Logo (Google favicon)
+    - name: Download Logo
       run: |
-        DOMAIN=$(echo "${{ github.event.inputs.url }}" | sed 's|https://||;s|http://||;s|/.*||')
-        curl -L "https://www.google.com/s2/favicons?sz=512&domain=$DOMAIN" -o logo.png
+        curl -L "https://www.google.com/s2/favicons?sz=512&domain=${{ github.event.inputs.site }}" -o logo.png
         
-    - name: Convert to WEBP
+    - name: Generate All Icons
       run: |
-        convert logo.png -resize 512x512 logo.webp
+        mkdir -p icons
 
-    - name: Clean Wrong Icons
-      run: |
-        rm -f template/app/src/main/res/mipmap-anydpi-v26/*.webp
-        rm -f template/app/src/main/res/mipmap-anydpi-v26/*.png
+        convert logo.png -resize 48x48 icons/mdpi.webp
+        convert logo.png -resize 72x72 icons/hdpi.webp
+        convert logo.png -resize 96x96 icons/xhdpi.webp
+        convert logo.png -resize 144x144 icons/xxhdpi.webp
+        convert logo.png -resize 192x192 icons/xxxhdpi.webp
 
-    - name: Replace Icons (FINAL CLEAN)
+        # Square icon (launcher)
+        convert logo.png -resize 512x512 -background white -gravity center -extent 512x512 icons/ic_launcher.webp
+
+        # Round icon (launcher)
+        convert logo.png -resize 512x512 -gravity center -extent 512x512 icons/ic_launcher_round.webp
+
+    - name: Replace Icons
       run: |
-        for dir in template/app/src/main/res/mipmap-*; do
-          if [[ "$dir" != *"anydpi"* ]]; then
-            cp logo.webp $dir/ic_launcher.webp || true
-            cp logo.webp $dir/ic_launcher_round.webp || true
-          fi
-        done
+        cp icons/mdpi.webp template/app/src/main/res/mipmap-mdpi/ic_launcher.webp
+        cp icons/hdpi.webp template/app/src/main/res/mipmap-hdpi/ic_launcher.webp
+        cp icons/xhdpi.webp template/app/src/main/res/mipmap-xhdpi/ic_launcher.webp
+        cp icons/xxhdpi.webp template/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp
+        cp icons/xxxhdpi.webp template/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp
+
+        cp icons/ic_launcher.webp template/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp
+        cp icons/ic_launcher_round.webp template/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp
+        cp icons/ic_launcher_round.webp template/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp
+        cp icons/ic_launcher_round.webp template/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp
+        cp icons/ic_launcher_round.webp template/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp
 
     - name: Replace URL
       run: |
