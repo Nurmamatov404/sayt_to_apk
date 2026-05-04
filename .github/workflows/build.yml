@@ -33,9 +33,10 @@ jobs:
       run: |
         sed -i "s|MY_APP_NAME|${{ github.event.inputs.app_name }}|g" template/app/src/main/res/values/strings.xml
 
-    - name: Download Logo
+    - name: Download Logo (FIXED)
       run: |
-        curl -L "https://www.google.com/s2/favicons?sz=512&domain=${{ github.event.inputs.site }}" -o logo.png
+        DOMAIN=$(echo "${{ github.event.inputs.site }}" | sed 's|https://||;s|http://||;s|/.*||')
+        curl -L "https://www.google.com/s2/favicons?sz=512&domain=$DOMAIN" -o logo.png
         
     - name: Generate All Icons
       run: |
