@@ -38,18 +38,16 @@ jobs:
         DOMAIN=$(echo "${{ github.event.inputs.url }}" | sed 's|https://||;s|http://||;s|/.*||')
         curl -L "https://www.google.com/s2/favicons?sz=512&domain=$DOMAIN" -o logo.png
         
-    - name: Check Logo File
+    - name: Convert to WEBP
       run: |
-        file logo.ico || true
-        file logo.png || true
+        convert logo.png -resize 512x512 logo.webp
 
-    - name: Resize Logo
+    - name: Replace Icons (FINAL FIX)
       run: |
-        convert logo.png -resize 512x512 logo.png
-
-    - name: Replace Icons (SAFE)
-      run: |
-        find template/app/src/main/res -type f \( -name "ic_launcher*.png" -o -name "ic_launcher*.webp" \) -exec cp logo.png {} \; || true
+        for dir in template/app/src/main/res/mipmap-*; do
+          cp logo.webp $dir/ic_launcher.webp || true
+          cp logo.webp $dir/ic_launcher_round.webp || true
+        done
 
     - name: Replace URL
       run: |
