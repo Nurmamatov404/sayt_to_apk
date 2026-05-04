@@ -42,11 +42,18 @@ jobs:
       run: |
         convert logo.png -resize 512x512 logo.webp
 
-    - name: Replace Icons (FINAL FIX)
+    - name: Clean Wrong Icons
+      run: |
+        rm -f template/app/src/main/res/mipmap-anydpi-v26/*.webp
+        rm -f template/app/src/main/res/mipmap-anydpi-v26/*.png
+
+    - name: Replace Icons (FINAL CLEAN)
       run: |
         for dir in template/app/src/main/res/mipmap-*; do
-          cp logo.webp $dir/ic_launcher.webp || true
-          cp logo.webp $dir/ic_launcher_round.webp || true
+          if [[ "$dir" != *"anydpi"* ]]; then
+            cp logo.webp $dir/ic_launcher.webp || true
+            cp logo.webp $dir/ic_launcher_round.webp || true
+          fi
         done
 
     - name: Replace URL
