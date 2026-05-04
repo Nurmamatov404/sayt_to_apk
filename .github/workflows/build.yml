@@ -37,6 +37,10 @@ jobs:
       run: |
         curl -L "https://ishgo.uz/favicon.ico" -o logo.ico
 
+    - name: Disable Adaptive Icon
+      run: |
+        rm -rf template/app/src/main/res/mipmap-anydpi-v26
+
     - name: Convert ICO to PNG
       run: |
         convert logo.ico logo.png
