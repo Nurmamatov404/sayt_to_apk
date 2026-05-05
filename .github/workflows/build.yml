@@ -6,6 +6,9 @@ on:
       url:
         description: "Website URL"
         required: true
+      logo_url:
+        description: "Logo URL (png/jpg/ico)"
+        required: false
       app_name:
         description: "App Name"
         required: true
@@ -35,8 +38,13 @@ jobs:
 
     - name: Download Logo
       run: |
-        curl -L "https://ishgo.uz/favicon.ico" -o logo.ico
-
+        if [ -n "${{ github.event.inputs.logo_url }}" ]; then
+          echo "Downloading logo..."
+          curl -L "${{ github.event.inputs.logo_url }}" -o logo.ico
+        else
+          echo "No logo provided, skipping..."
+        fi
+        
     - name: Disable Adaptive Icon
       run: |
         rm -rf template/app/src/main/res/mipmap-anydpi-v26
